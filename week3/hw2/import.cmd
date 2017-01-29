@@ -1,0 +1,1 @@
+mongoimport -d school -c grades grades.json
