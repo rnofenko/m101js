@@ -1,0 +1,1 @@
+mongoimport -d crunchbase2 -c companies companies.json
