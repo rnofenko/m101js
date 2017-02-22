@@ -1,0 +1,1 @@
+mongod --replSet m101 --logpath "log2.log" --dbpath c:\data\rs2 --port 27018 --oplogSize 64 --smallfiles

@@ -1,0 +1,1 @@
+mongod --replSet m101 --logpath "log3.log" --dbpath c:\data\rs3 --port 27019 --oplogSize 64 --smallfiles
