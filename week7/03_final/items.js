@@ -152,25 +152,15 @@ function ItemDAO(database) {
 
     this.getItem = function(itemId, callback) {
         "use strict";
-
-        /*
-         * TODO-lab3
-         *
-         * LAB #3: Implement the getItem() method.
-         *
-         * Using the itemId parameter, query the "item" collection by
-         * _id and pass the matching item to the callback function.
-         *
-         */
-
-        var item = this.createDummyItem();
-
-        // TODO-lab3 Replace all code above (in this method).
-
-        // TODO Include the following line in the appropriate
-        // place within your code to pass the matching item
-        // to the callback.
-        callback(item);
+        database
+            .collection('item')
+            .findOne({_id: itemId}, function(err, doc) {
+                if (err) {
+                    console.log("getItem error", err)
+                } else {
+                    callback(doc)
+                }
+            });
     }
 
 
@@ -188,19 +178,6 @@ function ItemDAO(database) {
 
     this.addReview = function(itemId, comment, name, stars, callback) {
         "use strict";
-
-        /*
-         * TODO-lab4
-         *
-         * LAB #4: Implement addReview().
-         *
-         * Using the itemId parameter, update the appropriate document in the
-         * "item" collection with a new review. Reviews are stored as an
-         * array value for the key "reviews". Each review has the fields:
-         * "name", "comment", "stars", and "date".
-         *
-         */
-
         var reviewDoc = {
             name: name,
             comment: comment,
@@ -208,15 +185,19 @@ function ItemDAO(database) {
             date: Date.now()
         }
 
-        // TODO replace the following two lines with your code that will
-        // update the document with a new review.
-        var doc = this.createDummyItem();
-        doc.reviews = [reviewDoc];
-
-        // TODO Include the following line in the appropriate
-        // place within your code to pass the updated doc to the
-        // callback.
-        callback(doc);
+        this.db.collection("item").findOneAndUpdate(
+            { "_id": itemId },
+            { $push: { "reviews": reviewDoc } },
+            function (err, doc) {
+                if (err) {
+                    console.log("addReview error", err)
+                } else {
+                    var updateItem = doc.value
+                    console.log('after update', updateItem)
+                    callback(updateItem)
+                }
+            }
+        )
     }
 
 
